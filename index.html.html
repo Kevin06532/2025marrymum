@@ -1,0 +1,139 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>妈妈圣诞快乐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* 蓝紫粉梦幻渐变背景（动态流动） */
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(120deg, #4158D0, #C850C0, #FFCC70);
+            background-size: 200% 200%;
+            animation: gradientFlow 8s ease infinite;
+            font-family: "Microsoft YaHei", sans-serif;
+            overflow: hidden;
+        }
+        /* 倒计时容器（超大字号+阴影） */
+        .countdown {
+            font-size: 18vw; /* 自适应屏幕 */
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(192,80,192,0.6);
+            animation: fadeIn 1s ease;
+        }
+        /* 祝福容器（隐藏状态，倒计时后显示） */
+        .blessing {
+            display: none;
+            text-align: center;
+            color: #fff;
+            padding: 0 20px;
+        }
+        .blessing h1 {
+            font-size: 8vw;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255,255,255,0.7);
+            animation: zoomIn 1s ease;
+        }
+        .blessing p {
+            font-size: 4vw;
+            opacity: 0.9;
+            animation: zoomIn 1s ease 0.3s backwards;
+        }
+        /* 雪花动画（增加圣诞氛围） */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            opacity: 0.7;
+            animation: snowfall linear infinite;
+        }
+        /* 动画关键帧 */
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes snowfall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 倒计时显示区 -->
+    <div class="countdown" id="countdown">3</div>
+    <!-- 祝福显示区（默认隐藏） -->
+    <div class="blessing" id="blessing">
+        <h1>妈妈圣诞快乐</h1>
+        <p>愿你被温暖包围，平安喜乐常伴 ❤️</p>
+    </div>
+
+    <script>
+        // 1. 倒计时逻辑（3→2→1）
+        const countdownEl = document.getElementById('countdown');
+        const blessingEl = document.getElementById('blessing');
+        let count = 3;
+
+        const timer = setInterval(() => {
+            count--;
+            if (count > 0) {
+                countdownEl.textContent = count;
+                // 倒计时切换时添加缩放动画
+                countdownEl.style.animation = 'none';
+                setTimeout(() => {
+                    countdownEl.style.animation = 'fadeIn 0.5s ease';
+                }, 10);
+            } else {
+                // 倒计时结束：隐藏倒计时，显示祝福
+                clearInterval(timer);
+                countdownEl.style.display = 'none';
+                blessingEl.style.display = 'block';
+                // 生成随机雪花
+                createSnowflakes();
+            }
+        }, 1000); // 每秒切换一次数字
+
+        // 2. 生成圣诞雪花（动态飘落）
+        function createSnowflakes() {
+            const snowCount = 50; // 雪花数量
+            for (let i = 0; i < snowCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = '❄️';
+                // 随机雪花大小、位置、飘落速度
+                const size = Math.random() * 15 + 5;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 15 + 10;
+                const delay = Math.random() * 5;
+
+                snowflake.style.fontSize = `${size}px`;
+                snowflake.style.left = `${left}vw`;
+                snowflake.style.animationDuration = `${duration}s`;
+                snowflake.style.animationDelay = `${delay}s`;
+
+                document.body.appendChild(snowflake);
+            }
+        }
+    </script>
+</body>
+</html>
