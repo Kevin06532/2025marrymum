@@ -1,0 +1,249 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>妈妈圣诞快乐</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            /* 替换为高清圣诞主题背景（暖光圣诞树+雪花+节日氛围） */
+            background: url('https://img2.baidu.com/it/u=1813509055,3590305941&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=1422') center/cover no-repeat;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-attachment: fixed;
+        }
+        /* 圣诞主题布置（保留+适配新背景） */
+        /* 顶部圣诞花环 */
+        .garland {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 15vw;
+            background: url('https://img.icons8.com/fluency/96/000000/christmas-wreath.png') repeat-x;
+            background-size: contain;
+            z-index: 5;
+            animation: garlandFloat 3s ease-in-out infinite;
+            opacity: 0.9;
+        }
+        /* 左侧圣诞树（适配背景，增强发光） */
+        .christmas-tree {
+            position: absolute;
+            bottom: 0;
+            left: 5vw;
+            font-size: 20vw;
+            color: #2d8b00; /* 深绿更贴合圣诞背景 */
+            z-index: 5;
+            animation: treeGlow 2s ease-in-out infinite;
+        }
+        /* 右侧圣诞彩灯 */
+        .lights {
+            position: absolute;
+            bottom: 0;
+            right: 5vw;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 5;
+        }
+        .light {
+            width: 8vw;
+            height: 8vw;
+            border-radius: 50%;
+            animation: lightBlink 1s ease-in-out infinite;
+        }
+        /* 雪花+彩片通用样式（适配新背景，增强对比度） */
+        .snow, .confetti {
+            position: absolute;
+            top: -10px;
+            border-radius: 50%;
+            animation: fall linear infinite;
+            z-index: 6;
+        }
+        /* 通透雪花（更洁白，贴合圣诞背景） */
+        .snow {
+            background: #ffffff;
+            opacity: 0.8;
+            box-shadow: 0 0 3px rgba(255,255,255,0.8);
+        }
+        /* 圣诞四色彩片（更鲜艳，突出氛围） */
+        .confetti {
+            opacity: 1;
+            box-shadow: 0 0 5px rgba(255,255,255,1);
+            display: none; /* 倒计时结束后显示 */
+        }
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px 35px;
+            background: rgba(255,255,255,0.25); /* 增强背景模糊层，突出内容 */
+            border-radius: 30px;
+            backdrop-filter: blur(8px);
+            position: relative;
+            padding-top: 50px;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3); /* 新增金色光晕，贴合圣诞 */
+        }
+        /* 倒计时（适配背景，颜色更亮眼） */
+        .countdown {
+            font-size: 13vw;
+            color: #ff69b4; /* 亮粉更突出 */
+            font-weight: bold;
+            text-shadow: 4px 4px 8px rgba(255,255,255,0.9);
+            display: block;
+            transition: all 0.5s ease;
+            font-family: "Comic Sans MS", "Microsoft YaHei", cursive;
+            animation: flash 0.8s ease-in-out infinite;
+        }
+        /* 祝福语（适配背景，增强发光） */
+        .blessing {
+            font-size: 7.5vw;
+            color: #ff4500; /* 橙红更贴合圣诞暖光 */
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(255,255,255,0.9);
+            display: none;
+            margin-top: 20px;
+            font-family: "Comic Sans MS", "Microsoft YaHei", cursive;
+            animation: bounce 1.2s ease-in-out infinite, glow 2s ease-in-out infinite;
+        }
+        /* 放大铃铛（适配背景，更亮更闪） */
+        .bell {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9vw;
+            color: #ffd700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 11;
+            animation: glow 1.5s ease-in-out infinite;
+            text-shadow: 0 0 10px #fffacd; /* 新增暖光阴影 */
+        }
+        .bell.active {
+            transform: translateX(-50%) scale(1.5) rotate(30deg);
+            color: #ffff00; /* 亮黄更显眼 */
+        }
+        /* 动画定义（全适配新背景） */
+        @keyframes fall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(100vh) rotate(360deg); } }
+        @keyframes flash { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.9); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes glow { 0%, 100% { text-shadow: 0 0 15px #fff; } 50% { text-shadow: 0 0 30px #ffd700; } } /* 金色发光，贴合圣诞 */
+        @keyframes garlandFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes treeGlow { 0%, 100% { text-shadow: 0 0 10px #38b000; } 50% { text-shadow: 0 0 25px #66ff00; } } /* 增强圣诞树发光 */
+        @keyframes lightBlink {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 10px rgba(255,255,255,0.8); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 圣诞主题布置 -->
+    <div class="garland"></div> <!-- 顶部圣诞花环 -->
+    <div class="christmas-tree">🎄</div> <!-- 左侧圣诞树 -->
+    <div class="lights"> <!-- 右侧圣诞彩灯 -->
+        <div class="light" style="background: #ff0000; animation-delay: 0s;"></div>
+        <div class="light" style="background: #ffd700; animation-delay: 0.2s;"></div>
+        <div class="light" style="background: #00ff00; animation-delay: 0.4s;"></div>
+        <div class="light" style="background: #00ffff; animation-delay: 0.6s;"></div>
+        <div class="light" style="background: #ff00ff; animation-delay: 0.8s;"></div>
+    </div>
+
+    <div class="container">
+        <div class="bell">🔔</div>
+        <div class="countdown">3</div>
+        <div class="blessing">妈妈，圣诞快乐🎄 平安喜乐✨</div>
+    </div>
+
+    <!-- 双音效（圣诞氛围拉满） -->
+    <audio id="bellSound" src="https://assets.mixkit.co/sfx/preview/mixkit-jingle-bells-1249.mp3" preload="auto">浏览器不支持音频
+    <audio id="surpriseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-party-confetti-explosion-1616.mp3" preload="auto">浏览器不支持音频
+
+    <script>
+        // 1. 雪花生成（每秒6片，超密集）
+        function createSnow() {
+            const snow = document.createElement('div');
+            snow.className = 'snow';
+            const size = Math.random() * 5 + 3;
+            snow.style.width = `${size}px`;
+            snow.style.height = `${size}px`;
+            snow.style.left = `${Math.random() * 100}vw`;
+            snow.style.animationDuration = `${Math.random() * 6 + 4}s`;
+            document.body.appendChild(snow);
+            setTimeout(() => snow.remove(), 10000);
+        }
+        setInterval(createSnow, 167); // 每秒6片，持续飘落
+
+        // 2. 圣诞彩片生成（四色+超密集，核心惊喜）
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            // 圣诞四色（更鲜艳，适配新背景）
+            const colors = ['#dc143c', '#ffd700', '#ff8fa3', '#38b000'];
+            confetti.style.background = colors[Math.floor(Math.random() * 4)];
+            const size = Math.random() * 7 + 3;
+            confetti.style.width = `${size}px`;
+            confetti.style.height = `${size}px`;
+            confetti.style.left = `${Math.random() * 100}vw`;
+            confetti.style.animationDuration = `${Math.random() * 5 + 3}s`;
+            confetti.style.display = 'block';
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 8000);
+        }
+
+        // 3. 惊喜触发逻辑（圣诞背景+全特效联动）
+        const countdownEl = document.querySelector('.countdown');
+        const blessingEl = document.querySelector('.blessing');
+        const bellSound = document.getElementById('bellSound');
+        const surpriseSound = document.getElementById('surpriseSound');
+        let count = 3;
+
+        // 音效优化（适配圣诞氛围）
+        bellSound.volume = 0.4;
+        surpriseSound.volume = 0.6;
+
+        const timer = setInterval(() => {
+            count--;
+            if (count > 0) {
+                countdownEl.textContent = count;
+                countdownEl.style.transform = 'scale(1.3)';
+                setTimeout(() => countdownEl.style.transform = 'scale(1)', 300);
+            } else {
+                countdownEl.style.display = 'none';
+                // 祝福语快速淡入
+                blessingEl.style.display = 'block';
+                blessingEl.style.opacity = '0';
+                let opacity = 0;
+                const fadeIn = setInterval(() => {
+                    opacity += 0.2;
+                    blessingEl.style.opacity = opacity;
+                    if (opacity >= 1) {
+                        clearInterval(fadeIn);
+                        // 触发漫天彩片雨+惊喜音效
+                        surpriseSound.play();
+                        const confettiTimer = setInterval(createConfetti, 70);
+                        setTimeout(() => clearInterval(confettiTimer), 2500);
+                    }
+                }, 25);
+                clearInterval(timer);
+            }
+        }, 1000);
+
+        // 4. 铃铛互动（超猛动画+音效）
+        const bellEl = document.querySelector('.bell');
+        bellEl.addEventListener('click', () => {
+            bellEl.classList.add('active');
+            setTimeout(() => bellEl.classList.remove('active'), 300);
+            bellSound.currentTime = 0;
+            bellSound.play().catch(err => {
+                alert('点击铃铛有圣诞音效哦～ 请允许浏览器音频权限');
+            });
+        });
+    </script>
+</body>
+</html>
